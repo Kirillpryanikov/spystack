@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import scrapy
 from scrapy.crawler import CrawlerProcess
 import json
@@ -24,6 +26,7 @@ from siteInfo.ScrapperBigmk import BigmkSpider
 from siteInfo.ScrapperBigbenta import BigbentaSpider
 from siteInfo.ScrapperAsianic import AsianicSpider
 from siteInfo.ScrapperAdobomall import AdobomallSpider
+from siteInfo.ScrapperEmcor import EmcorSpider
 
 # parse file with links
 # with open('links.json') as file:
@@ -51,12 +54,14 @@ takatack = [];
 villman = [];
 widgetcity = [];
 otcer = [];
+shopee = [];
+emcor = [];
 
 # sort links to different arrays
 for link in data:
     # db.insertUrl(link['link'])
-    if str(link['link']).find('abenson') >= 0:
-        abenson.append(link['link'])
+    if str(link).find('abenson') >= 0:
+        abenson.append(link)
     elif str(link).find('argomall') >= 0:
         argomall.append(link)
     elif str(link).find('anson') >= 0:
@@ -93,10 +98,14 @@ for link in data:
         widgetcity.append(link)
     elif str(link).find('otcer') >= 0:
         otcer.append(link)
+    elif str(link).find('shopee') >= 0:
+        shopee.append(link)
+    elif str(link).find('emcor') >= 0:
+        emcor.append(link)
 
 # run spiders and configure them
 process = CrawlerProcess({
-    'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
+    'USER_AGENT': 'Mozilla/5.0 (X11; Linux i686 on x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.63 Safari/537.36'
 })
 
 process.crawl(AbensonSpider, start_urls=abenson)
@@ -118,5 +127,7 @@ process.crawl(VillmanSpider, start_urls=villman)
 process.crawl(WidgetcitySpider, start_urls=widgetcity)
 process.crawl(LazadaSpider, start_urls=lazada)
 process.crawl(OtcerSpider, start_urls=otcer)
+process.crawl(ShopeeSpider, start_urls=shopee)
+process.crawl(EmcorSpider, start_urls=emcor)
 
 process.start()
